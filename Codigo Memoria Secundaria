@@ -1,0 +1,41 @@
+#include <iostream>
+#include <stack>
+#include <fstream>
+using namespace std;
+
+struct Alumno {
+    string codigo;
+    string nombre;
+};
+
+int main() {
+    stack<Alumno> pila;
+
+    Alumno al = {"21789045", "Gabriel Rodriguez"};
+    Alumno a2 = {"21976325", "Antonio Cedano"};
+    Alumno a3 = {"22122638", "Carlos Cardenas"};
+    Alumno a4 = {"22114242", "Angel Plascencia"};
+
+    pila.push(al);
+    pila.push(a2);
+    pila.push(a3);
+    pila.push(a4);
+
+    ofstream archivoCodigos("codigos.txt");
+    ofstream archivoNombres("nombres.txt");
+
+    while (!pila.empty()) {
+        Alumno temp = pila.top();
+        pila.pop();
+
+        archivoCodigos << temp.codigo << endl;
+        archivoNombres << temp.nombre << endl;
+    }
+
+    archivoCodigos.close();
+    archivoNombres.close();
+
+    cout << "Datos guardados en codigos.txt y nombres.txt" << endl;
+
+    return 0;
+}
