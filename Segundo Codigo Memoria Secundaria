@@ -1,0 +1,44 @@
+#include <iostream>
+#include <stack>
+#include <fstream>
+using namespace std;
+
+class Alumno {
+public:
+    int codigo;
+    string nombre;
+
+    Alumno(int c, string n) {
+        codigo = c;
+        nombre = n;
+    }
+};
+
+int main() {
+    stack<Alumno> pila;
+
+    // Crear y agregar alumnos a la pila
+    pila.push(Alumno(21789045, "Gabriel Rodriguez"));
+    pila.push(Alumno(21976325, "Antonio Cedano"));
+    pila.push(Alumno(22122638, "Carlos Cardenas"));
+
+    // Crear archivo en el directorio actual
+    ofstream archivo("alumnos.txt");
+
+    if (!archivo) {
+        cout << "No se pudo crear el archivo." << endl;
+        return 1;
+    }
+
+    // Sacar los alumnos de la pila y guardarlos en el archivo
+    while (!pila.empty()) {
+        Alumno temp = pila.top(); // obtener el último alumno
+        archivo << temp.codigo << " " << temp.nombre << endl;
+        pila.pop(); // eliminar el alumno de la pila
+    }
+
+    archivo.close();
+    cout << "Datos guardados en alumnos.txt correctamente." << endl;
+
+    return 0;
+}
