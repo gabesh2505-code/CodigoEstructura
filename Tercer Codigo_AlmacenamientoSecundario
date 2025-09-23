@@ -1,0 +1,98 @@
+#include <iostream>
+#include <stack>
+#include <fstream>
+
+using namespace std;
+
+class Pilaest {
+private:
+    stack<int> pila;
+
+public:
+    void capturar(int valor) {
+        pila.push(valor);
+    }
+
+    void eliminar() {
+        if (pila.empty()) {
+            cout << "La pila esta vacia" << endl;
+        }
+        else {
+            pila.pop();
+        }
+    }
+
+    void mostrarEnConsola() {
+        if (pila.empty()) {
+            cout << "La pila esta vacia" << endl;
+        }
+        else {
+            cout << "Elementos en la pila: " << endl;
+            stack<int> temp = pila;
+            while (!temp.empty()) {
+                cout << temp.top() << endl;
+                temp.pop();
+            }
+        }
+    }
+
+    void actualizarArchivo(const string& ruta) {
+        ofstream archivo(ruta, ios::trunc);
+
+        if (!archivo.is_open()) {
+            cout << "Error al abrir el archivo en: " << ruta << endl;
+        }
+        else {
+            stack<int> temp = pila;
+
+            while (!temp.empty()) {
+                archivo << temp.top() << endl;
+                temp.pop();
+            }
+        }
+    }
+};
+
+int main() {
+    string ruta = "C:/Users/TuUsuario/Desktop/pila_salida.txt";
+
+    Pilaest miPila;
+
+    cout << "El archivo de la pila se guardara en: " << ruta << endl;
+
+    int opcion, valor;
+
+    do {
+        cout << "\n===MENU===\n";
+        cout << "1. Capturar\n";
+        cout << "2. Mostrar en consola\n";
+        cout << "3. Eliminar\n";
+        cout << "4. Salir\n";
+        cout << "Seleccione una opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+            cout << "Ingrese un valor entero para agregar a la pila: ";
+            cin >> valor;
+            miPila.capturar(valor);
+            system("cls");
+            miPila.actualizarArchivo(ruta);
+            break;
+        case 2:
+            miPila.mostrarEnConsola();
+            break;
+        case 3:
+            miPila.eliminar();
+            miPila.actualizarArchivo(ruta);
+            break;
+        case 4:
+            cout << "Adios :c" << endl;
+            break;
+        default:
+            cout << "Opcion incorrecta, intenta otra vez" << endl;
+        }
+    } while (opcion != 4);
+
+    return 0;
+}
