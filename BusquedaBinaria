@@ -1,0 +1,127 @@
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <algorithm> // sort
+using namespace std;
+
+class PilaBinaria {
+private:
+    stack<int> pila;
+
+public:
+    void capturar(int valor) {
+        pila.push(valor);
+    }
+
+    void mostrar() {
+        stack<int> temp = pila;
+        cout << "Elementos en la pila:" << endl;
+        while (!temp.empty()) {
+            cout << temp.top() << endl;
+            temp.pop();
+        }
+    }
+
+    void mostrarEnLinea() {
+        stack<int> temp = pila;
+        cout << "Estado actual de la pila: ";
+        while (!temp.empty()) {
+            cout << temp.top() << " ";
+            temp.pop();
+        }
+        cout << endl;
+    }
+
+    void busquedaBinaria(int elemento) {
+        // Pasamos los elementos de la pila a un vector
+        stack<int> temp = pila;
+        vector<int> datos;
+
+        while (!temp.empty()) {
+            datos.push_back(temp.top());
+            temp.pop();
+        }
+
+        // Ordenamos el vector
+        sort(datos.begin(), datos.end());
+
+        cout << endl << "Buscando el elemento " << elemento << "..." << endl;
+        cout << "Datos ordenados: ";
+        for (int d : datos) cout << d << " ";
+        cout << endl;
+
+        // Búsqueda binaria
+        int inicio = 0, fin = datos.size() - 1;
+        char encontrado = 'F';
+
+        while (inicio <= fin) {
+            int mid = (inicio + fin) / 2;
+
+            if (datos[mid] == elemento) {
+                cout << "Elemento " << elemento << " fue encontrado en la posicion " << mid << " del vector ordenado :)" << endl;
+                encontrado = 'V';
+                break;
+            }
+            else if (datos[mid] < elemento) {
+                inicio = mid + 1;
+            }
+            else {
+                fin = mid - 1;
+            }
+        }
+
+        if (encontrado == 'F') {
+            cout << "Elemento " << elemento << " NO fue encontrado. :(" << endl;
+        }
+
+        cout << "Estado de la busqueda: " << encontrado << endl;
+    }
+};
+
+int main() {
+    PilaBinaria pila;
+    int opcion, valor, n;
+
+    do {
+        cout << "\n----- MENU -----" << endl;
+        cout << "1. Insertar elementos en la pila" << endl;
+        cout << "2. Buscar un elemento en la pila (binaria)" << endl;
+        cout << "3. Mostrar pila" << endl;
+        cout << "4. Salir" << endl;
+        cout << "Elige una opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        case 1:
+            cout << endl << "Cuantos valores deseas insertar? ";
+            cin >> n;
+            for (int i = 0; i < n; i++) {
+                cout << "Ingresa el valor " << i + 1 << ": ";
+                cin >> valor;
+                pila.capturar(valor);
+            }
+            break;
+
+        case 2:
+            pila.mostrarEnLinea();
+            cout << "Que valor deseas buscar? ";
+            cin >> valor;
+            pila.busquedaBinaria(valor);
+            break;
+
+        case 3:
+            pila.mostrar();
+            break;
+
+        case 4:
+            cout << "Saliendo del programa..." << endl;
+            break;
+
+        default:
+            cout << "Opcion invalida, intenta de nuevo." << endl;
+        }
+
+    } while (opcion != 4);
+
+    return 0;
+}
